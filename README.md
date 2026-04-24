@@ -1,9 +1,9 @@
 # HospitalER: Hospital Emergency Room management system
 ## Team Members
-Nazla Chy, 20240004973, Lead Developer & Project Coordinator
-Elham Abbas Abbasi, 20240005699, Data Structures & Integration
-Fedora Fernandes, 20240005748, Resource Management & Statistics
-Negin Mirzajani, 20240004675, UI & Supporting Components
+- Nazla Chy, 20240004973, Lead Developer & Project Coordinator
+- Elham Abbas Abbasi, 20240005699, Data Structures & Integration
+- Fedora Fernandes, 20240005748, Resource Management & Statistics
+- Negin Mirzajani, 20240004675, UI & Supporting Components
 
 ## Project
 
