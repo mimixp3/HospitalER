@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashMap; //For Availability, nodetype and adjacency list
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.List; 
 import java.util.Set;
 
 
@@ -24,13 +24,13 @@ public class ResourceGraph {
         nodeType.put(id, type);
     }
 
-    // O(1)
+    // O(1) adding edges to connect
     public void addEdge(String a, String b) {
         adjacencyList.get(a).add(b);
         adjacencyList.get(b).add(a);
     }
 
-    // O(degree)
+    // O(degree) removing the edge between two 
     public void removeEdge(String a, String b) {
         if (adjacencyList.containsKey(a)) adjacencyList.get(a).remove(b);
         if (adjacencyList.containsKey(b)) adjacencyList.get(b).remove(a);
@@ -63,29 +63,51 @@ public class ResourceGraph {
         return null;
     }
 
+    //assign the patient with resources
     public void assignResource(String patientId, String resourceId) {
         addEdge(patientId, resourceId);
         availability.put(resourceId, false);
     }
 
+    //release upon discharge
     public void releaseResource(String patientId, String resourceId) {
         removeEdge(patientId, resourceId);
         availability.put(resourceId, true);
     }
 
-    public void setAvailable(String id, boolean val) { availability.put(id, val); }
-    public boolean isAvailable(String id) { return availability.getOrDefault(id, false); }
-    public String getType(String id) { return nodeType.getOrDefault(id, "unknown"); }
-    public List<String> getNeighbors(String id) { return adjacencyList.getOrDefault(id, new ArrayList<>()); }
-    public Set<String> getAllNodes() { return adjacencyList.keySet(); }
+    //availability setting
+    public void setAvailable(String id, boolean val) {
+        availability.put(id, val);
+    }
 
-    public int countAvailableDoctors() {
+    //checks if available
+    public boolean isAvailable(String id) {
+        return availability.getOrDefault(id, false);
+    }
+
+    //type return for node
+    public String getType(String id) {
+        return nodeType.getOrDefault(id, "unknown");
+    }
+    //get neighbours adjacent
+    public List<String> getNeighbors(String id) {
+        return adjacencyList.getOrDefault(id, new ArrayList<>());
+    }
+
+    //get all nodes
+    public Set<String> getAllNodes() {
+        return adjacencyList.keySet();
+    }
+
+    //count available doctors this helps for the BFS
+    public int countAvailableDoctors(){
         return (int) availability.entrySet().stream()
             .filter(e -> e.getValue() && nodeType.getOrDefault(e.getKey(), "").equals("doctor"))
             .count();
     }
 
-    public int countAvailableRooms() {
+    //count available rooms this helps for the BFS
+    public int countAvailableRooms(){
         return (int) availability.entrySet().stream()
             .filter(e -> e.getValue() && nodeType.getOrDefault(e.getKey(), "").equals("room"))
             .count();
