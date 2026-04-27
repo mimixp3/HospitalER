@@ -1,16 +1,18 @@
-import javafx.application.Application;
+import javafx.application.Application; //framework for JavaFX program execution
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
-import javafx.scene.control.*;
-import javafx.geometry.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.control.*; 
+import javafx.geometry.*; //for layout positions and alignment
+import javafx.collections.FXCollections; //for observable components like observableList
+import javafx.collections.ObservableList; //list interface
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
-import java.time.LocalDate;
-import java.util.List;
+import java.time.format.DateTimeFormatter; //formatting date into hh:mm
+import javafx.scene.control.Label; //label for texts
+import javafx.scene.layout.Region; //region for empty spaces
+import java.time.LocalDate; //for time
+import java.util.List; //list
+
 
 public class Main extends Application {
 
@@ -18,6 +20,7 @@ public class Main extends Application {
     private ERSystem system;
     private BorderPane root;
 
+    //colour scheme
     private static final String GREEN_DARK = "#4A6741";
     private static final String GREEN_MID = "#6B8F3E";
     private static final String GREEN_LIGHT = "#C8E6A0";
@@ -32,13 +35,14 @@ public class Main extends Application {
         userName = askForName();
 
         this.root = new BorderPane();
+        //nav buttons list with 5 buttons
         Button[] navBtns = new Button[5];
         root.setLeft(buildSidebar(root, navBtns));
         root.setCenter(buildDashboard());
         root.setStyle("-fx-background-color: " + GREEN_DARK + ";");
 
         Scene scene = new Scene(root, 800, 600);
-        stage.setTitle("HospitalER Management");
+        stage.setTitle("HospitalER Management"); //title of window
         stage.setScene(scene);
         stage.setResizable(true);
         stage.setMinWidth(400);
@@ -46,6 +50,7 @@ public class Main extends Application {
         stage.show();
     }
 
+    //Dialog prompting name
     private String askForName() {
         TextInputDialog dlg = new TextInputDialog("");
         dlg.setTitle("Welcome to HospitalER");
@@ -55,6 +60,7 @@ public class Main extends Application {
         return dlg.showAndWait().orElse("User");
     }
 
+    //Sidebar on the left with nav buttons for pages
     private VBox buildSidebar(BorderPane root, Button[] navBtns) {
         VBox sidebar = new VBox(18);
         sidebar.setPadding(new Insets(28, 20, 28, 20));
@@ -80,6 +86,7 @@ public class Main extends Application {
 
         logo.getChildren().addAll(icon, logoText);
 
+        //nav buttons and logo+ text
         navBtns[0] = navBtn("⌂", "Dashboard", true);
         navBtns[1] = navBtn("⚠", "Queue", false);
         navBtns[2] = navBtn("☷", "Patient Registry", false);
@@ -97,6 +104,7 @@ public class Main extends Application {
         return sidebar;
     }
 
+    //nav button in sidebar
     private Button navBtn(String icon, String label, boolean active) {
         Label iconLabel = new Label(icon);
         iconLabel.setStyle("-fx-font-size: 20px;");
@@ -110,14 +118,13 @@ public class Main extends Application {
         Button btn = new Button();
         btn.setGraphic(content);
 
-
-
         btn.setPrefWidth(230);
         btn.setMinHeight(45);
         btn.setAlignment(Pos.CENTER_LEFT);
         btn.setWrapText(true);
         btn.setStyle(active ? activeNav() : inactiveNav());
 
+        //button effects when hovering or inactive
         btn.setOnMouseEntered(e -> {
             if (!btn.getStyle().contains(GREEN_LIGHT)) btn.setStyle(hoverNav());
         });
@@ -127,12 +134,14 @@ public class Main extends Application {
         return btn;
     }
 
+    //button activation
     private void setActive(Button[] btns, int idx) {
         for (int i = 0; i < btns.length; i++) {
             btns[i].setStyle(i == idx ? activeNav() : inactiveNav());
         }
     }
 
+    //active style nav
     private String activeNav() {
         return "-fx-background-color: " + GREEN_LIGHT + ";"
                 + "-fx-text-fill: " + GREEN_DARK + ";"
@@ -143,6 +152,7 @@ public class Main extends Application {
                 + "-fx-cursor: hand;";
     }
 
+    //inactive style
     private String inactiveNav() {
         return "-fx-background-color: transparent;"
                 + "-fx-text-fill: " + GREEN_DARK + ";"
@@ -153,6 +163,7 @@ public class Main extends Application {
                 + "-fx-cursor: hand;";
     }
 
+    //hover style
     private String hoverNav() {
         return "-fx-background-color: #E8F5D0;"
                 + "-fx-text-fill: " + GREEN_DARK + ";"
@@ -163,6 +174,7 @@ public class Main extends Application {
                 + "-fx-cursor: hand;";
     }
 
+    //shell content
     private ScrollPane shell(VBox content) {
         VBox outer = new VBox();
         outer.setPadding(new Insets(18));
@@ -180,6 +192,7 @@ public class Main extends Application {
         return sp;
     }
 
+    //page titles
     private VBox pageHeader(String title) {
         HBox top = new HBox();
         top.setAlignment(Pos.CENTER_LEFT);
@@ -197,6 +210,7 @@ public class Main extends Application {
         return box;
     }
 
+    //white layers used in every page
     private VBox whitePanel() {
         VBox panel = new VBox();
         panel.setPadding(new Insets(20));
@@ -205,6 +219,7 @@ public class Main extends Application {
         return panel;
     }
 
+    //label
     private Label label(String text, int size, String color, boolean bold) {
         Label l = new Label(text);
         l.setWrapText(true);
@@ -213,6 +228,7 @@ public class Main extends Application {
         return l;
     }
 
+    //textfield box for typing field
     private TextField field(String prompt) {
         TextField f = new TextField();
         f.setPromptText(prompt);
@@ -228,6 +244,7 @@ public class Main extends Application {
         return f;
     }
 
+    //combobox for dropdown
     private ComboBox<String> combo(String prompt, String... items) {
         ComboBox<String> c = new ComboBox<>();
         c.getItems().addAll(items);
@@ -243,6 +260,7 @@ public class Main extends Application {
         return c;
     }
 
+    //action button
     private Button actionButton(String text) {
         Button b = new Button(text);
         b.setPrefHeight(50);
@@ -255,6 +273,8 @@ public class Main extends Application {
         return b;
     }
 
+
+    //Queue page in severity descending order
     private ScrollPane buildQueuePage() {
         VBox page = new VBox(34);
         page.setPadding(new Insets(34, 28, 34, 28));
@@ -282,6 +302,7 @@ public class Main extends Application {
         return shell(page);
     }
 
+    //Queue rows
     private HBox queueRow(int pos, Patient p) {
         HBox row = new HBox(18);
         row.setAlignment(Pos.CENTER_LEFT);
@@ -301,10 +322,11 @@ public class Main extends Application {
         info.getChildren().addAll(
                 label(p.getName() + ", " + p.getAge() + p.getGender(), 22, GREEN_DARK, true),
                 label(p.getCondition(), 18, "#333333", false),
-                label(p.getArrivalTime().toString(), 14, GRAY, false)
+                label(p.getArrivalTime().format(DateTimeFormatter.ofPattern("hh:mm a")), 14, GRAY, false)
         );
         HBox.setHgrow(info, Priority.ALWAYS);
 
+        //badges
         Label badge = new Label(p.getSeverityLabel().toUpperCase());
         badge.setStyle("-fx-background-color: " + p.getSeverityColor() + ";"
                 + "-fx-text-fill: white;"
@@ -317,6 +339,7 @@ public class Main extends Application {
         return row;
     }
 
+    //Registration form page
     private ScrollPane buildRegistrationPage() {
         VBox page = new VBox(20);
         page.setPadding(new Insets(30, 25, 30, 25));
@@ -338,6 +361,7 @@ public class Main extends Application {
 
         Label section = label("Patient Details", 18, GREEN_DARK, true);
 
+        //registration forms fields
         TextField nameField = field("Full name");
         TextField ageField = field("Age");
         ComboBox<String> gender = combo("Gender", "Male", "Female"); //combo is for dropdown
@@ -362,6 +386,7 @@ public class Main extends Application {
                 insuranceField
         );
 
+        //Registering patient button + style
         Button register = new Button("Register Patient");
         register.setPrefHeight(46);
         register.setMaxWidth(260);
@@ -378,6 +403,7 @@ public class Main extends Application {
 
         register.setOnAction(e -> {
             try {
+                //trimming
                 String name = nameField.getText().trim();
                 String ageStr = ageField.getText().trim();
                 String g = gender.getValue();
@@ -387,16 +413,18 @@ public class Main extends Application {
                 String a = allergyField.getText().trim();
                 String contact = contactField.getText().trim();
                 String insurance = insuranceField.getValue();
-
-
+                
+                //handing short names
                 if (name.length() < 2) {
                     throw new ERException("The name you entered is too short !");
                 }
 
+                //handling empty fields
                 if (name.isEmpty()||ageStr.isEmpty() ||g==null||report.isEmpty()||sevVal == null||bt == null||a==null||contact.isEmpty()||insurance == null) {
                     throw new ERException("Please fill all the fields !");
                 }
 
+                //exception handling for age
                 int age = Integer.parseInt(ageStr);
                 if (age < 0||age > 120) {
                     throw new ERException("Please only enter valid age!");
@@ -409,6 +437,7 @@ public class Main extends Application {
                 showSuccess(name + " registered as " + p.getPatientId()+"!");
                 root.setCenter(buildRegistryPage());
 
+                //clearing all our fields
                 nameField.clear();
                 ageField.clear();
                 gender.getSelectionModel().clearSelection();
@@ -449,6 +478,7 @@ public class Main extends Application {
         return sp;
     }
 
+    //Statistics page
     private ScrollPane buildStatisticsPage() {
         system.getStats().loadFromPatients(system.getRegistry().getAllPatients()); //refresh for latest
         Stats sa = system.getStats();
@@ -500,7 +530,8 @@ public class Main extends Application {
         page.getChildren().addAll(cards, breakdown);
         return shell(page);
     }
-    
+
+    //Registry page
     private ScrollPane buildRegistryPage() {
         VBox page = new VBox(20);
         page.setPadding(new Insets(34, 28, 34, 28));
@@ -534,6 +565,7 @@ public class Main extends Application {
         return shell(page);
     }
 
+    //Rows for registry page
     private VBox registryRow(Patient p) {
         VBox container = new VBox(0);
 
@@ -545,6 +577,7 @@ public class Main extends Application {
                 + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);"
                 + "-fx-cursor: hand;");
 
+        //Discharge button next to the patient card along with alert confirming
         Button dischargeBtn = new Button("Discharge");
         dischargeBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-weight: bold;-fx-background-radius: 8;");
         dischargeBtn.setOnAction(e -> {
@@ -608,7 +641,7 @@ public class Main extends Application {
                 detailItem("Insurance", p.getInsurance()),
                 detailItem("Allergies", p.getAllergies()),
                 detailItem("Contact", p.getContact()),
-                detailItem("Arrival", p.getArrivalTime().toString()),
+                detailItem("Arrival", p.getArrivalTime().format(DateTimeFormatter.ofPattern("hh:mm a"))),
                 detailItem("Severity", p.getSeverityScore() + "/10 (" + p.getSeverityLabel() + ")")
         );
 
@@ -626,6 +659,7 @@ public class Main extends Application {
         return container;
     }
 
+    //Stats page cards
     private VBox statPageCard(String title, String value, String color) {
         VBox card = new VBox(6);
         card.setPadding(new Insets(16));
@@ -643,7 +677,8 @@ public class Main extends Application {
 
         return card;
     }
-    
+
+    //Details
     private HBox detailItem(String label, String value) {
         HBox item = new HBox(10);
         item.setAlignment(Pos.CENTER_LEFT);
@@ -655,6 +690,8 @@ public class Main extends Application {
         return item;
     }
 
+
+    //Dashboard page
     private ScrollPane buildDashboard() {
         VBox outerFrame = new VBox();
         outerFrame.setPadding(new Insets(18));
@@ -712,6 +749,7 @@ public class Main extends Application {
         return sp;
     }
 
+    //Mini queue box in dashboard page
     private VBox buildMiniQueue() {
         VBox card = new VBox(10);
         card.setPadding(new Insets(18));
@@ -728,6 +766,7 @@ public class Main extends Application {
         return card;
     }
 
+    //Rows for queue in Dashboard
     private HBox queueRowMini(Patient p) {
         HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER_LEFT);
@@ -751,6 +790,7 @@ public class Main extends Application {
         return row;
     }
 
+    //Mini stats for dashboard page
     private VBox buildMiniStats() {
         VBox card = new VBox(8);
         card.setPadding(new Insets(18));
@@ -768,6 +808,7 @@ public class Main extends Application {
         return card;
     }
 
+    //mini statistics boxes
     private VBox miniStat(String a, String b) {
         VBox row = new VBox(2);
         row.setPadding(new Insets(8, 12, 8, 12));
@@ -776,6 +817,8 @@ public class Main extends Application {
         return row;
     }
 
+
+    //Mini Calendar
     private VBox buildCalendar() {
         VBox card = new VBox(10);
         card.setPrefWidth(210);
@@ -839,6 +882,7 @@ public class Main extends Application {
         return card;
     }
 
+    //Stats card white layer
     private VBox statCard(String title, String content, String color) {
         VBox card = new VBox(8);
         card.setPadding(new Insets(18));
@@ -849,6 +893,7 @@ public class Main extends Application {
         return card;
     }
 
+    //Stats card green bg layer
     private VBox statCardBig(String title, String value, String color) {
         VBox card = new VBox(8);
         card.setPadding(new Insets(18));
@@ -859,6 +904,7 @@ public class Main extends Application {
         return card;
     }
 
+    //Error alert
     private void showError(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -867,6 +913,7 @@ public class Main extends Application {
         alert.showAndWait();
     }
 
+    //success alert
     private void showSuccess(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
