@@ -22,7 +22,6 @@ public class Stats {
         }
     }
 
-
     //calculation methods
 
     //calculates average time
