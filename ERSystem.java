@@ -11,7 +11,7 @@ public class ERSystem {
         regQueue = new RegQueue();
         resourceGraph = new ResourceGraph();
         stats = new Stats();
-        initializeHospitalResources();
+        initializeHospitalResources(); //for all the doctors and rooms
     }
 
 
